@@ -1,0 +1,6 @@
+bundler/.bundle/cache/**/*
+vscode
+vim/.vim
+local_data
+newsboat/*
+.DS_Store

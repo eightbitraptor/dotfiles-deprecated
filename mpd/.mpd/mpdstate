@@ -1,0 +1,32 @@
+sw_volume: 100
+audio_device_state:1:My Pulse Output
+state: pause
+current: 15
+time: 1.787000
+random: 0
+repeat: 0
+single: 0
+consume: 0
+crossfade: 0
+mixrampdb: 0.000000
+mixrampdelay: -1.000000
+playlist_begin
+0:Anoice - The Black Rain/01 Self-Portrait.mp3
+1:Anoice - The Black Rain/02 Colder Than Thermite.mp3
+2:Anoice - The Black Rain/03 Ripple.mp3
+3:Anoice - The Black Rain/04 Tipsy Dance.mp3
+4:Anoice - The Black Rain/05 Cat In The Rain.mp3
+5:Anoice - The Black Rain/06 White Paper.mp3
+6:Anoice - The Black Rain/07 Drops.mp3
+7:Anoice - The Black Rain/08 The End Of Something.mp3
+8:Anoice - The Black Rain/09 Finale.mp3
+9:Anoice - The Black Rain/10 Fall Asleep.mp3
+10:Envy/Athiest's cornea/01 Blue Moonlight.mp3
+11:Envy/Athiest's cornea/02 Ignorant Rain at the End of the World.mp3
+12:Envy/Athiest's cornea/03 Shining Finger.mp3
+13:Envy/Athiest's cornea/04 Ticking Time and String.mp3
+14:Envy/Athiest's cornea/05 Footsteps in the Distance.mp3
+15:Envy/Athiest's cornea/06 An Insignificant poem.mp3
+16:Envy/Athiest's cornea/07 Two Isolated Souls.mp3
+17:Envy/Athiest's cornea/08 Your Heart and My Hand.mp3
+playlist_end

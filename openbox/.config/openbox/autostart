@@ -1,0 +1,10 @@
+# Set wallpaper (feh --bg-fill normal)
+#/bin/bash ~/.fehbg
+#
+#
+# Keyboard stuff
+
+/bin/bash $HOME/.fehbg &
+setxkbmap -option "ctrl:nocaps" &
+
+/bin/bash $HOME/.config/openbox/lemonbar.sh | /usr/bin/lemonbar -b -f "Font Awesome:size=9" -f "DejaVu Sans:size=9"
