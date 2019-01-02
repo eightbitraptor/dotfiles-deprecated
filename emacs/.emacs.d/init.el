@@ -67,6 +67,7 @@
               '((swiper . ivy--regex-plus)
                 (t      . ivy--regex-plus)))
         (ivy-mode 1)
+  :config (ivy-rich-mode 1)
   :bind ("C-s"     . swiper)
         ("M-x"     . counsel-M-x)
         ("C-x C-f" . counsel-find-file)
@@ -74,6 +75,9 @@
         ("C-c u "  . counsel-unicode-char)
         ("C-c j"   . counsel-git-grep)
         ("C-c k"   . counsel-ag))
+
+(use-package ivy-rich
+  :ensure t)
 
 (use-package magit
   :ensure t
