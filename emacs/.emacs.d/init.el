@@ -35,7 +35,7 @@
 
 (use-package doom-themes
   :ensure t
-  :config (load-theme 'doom-one t))
+  :config (load-theme 'doom-challenger-deep t))
 
 (use-package enh-ruby-mode
   :ensure t
@@ -195,7 +195,8 @@
 (tool-bar-mode 0)
 (setq initial-scratch-message "")
 (setq inhibit-startup-message t)
-(set-face-attribute 'default nil :font "Fira Code 16")
+(setq-default line-spacing 5)
+(set-face-attribute 'default nil :font "Fira Code 14")
 
 ;; Save/Backup file behaviour
 (setq auto-save-default nil)
