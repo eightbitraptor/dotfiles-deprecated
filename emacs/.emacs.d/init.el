@@ -81,8 +81,9 @@
         (setq magit-push-current-set-remote-if-missing nil)
   :bind ("C-c s" . magit-status))
 
-;;(use-package minitest
-;;  :ensure t)
+(use-package minitest
+  :ensure t
+  :hook enh-ruby-mode)
 
 (use-package minimap
   :ensure t
