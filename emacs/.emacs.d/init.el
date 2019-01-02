@@ -84,6 +84,11 @@
 ;;(use-package minitest
 ;;  :ensure t)
 
+(use-package minimap
+  :ensure t
+  :config (setq minimap-window-location 'right)
+  :bind ("C-c m" . minimap-mode))
+
 (use-package nyan-mode
   :ensure t
   :init (nyan-mode))
