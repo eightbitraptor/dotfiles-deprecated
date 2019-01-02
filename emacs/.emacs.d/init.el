@@ -88,6 +88,7 @@
 (use-package minimap
   :ensure t
   :config (setq minimap-window-location 'right)
+          (setq minimap-automatically-delete-window nil)
   :bind ("C-c m" . minimap-mode))
 
 (use-package nyan-mode
