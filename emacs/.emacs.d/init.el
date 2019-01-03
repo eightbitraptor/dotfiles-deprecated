@@ -153,7 +153,9 @@
   :init (setq projectile-completion-system 'ivy))
 
 
-(use-package projectile-rails :ensure t)
+(use-package projectile-rails
+  :ensure t
+  :config (projectile-rails-global-mode t))
 
 (use-package robe :ensure t)
 
