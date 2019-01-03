@@ -44,8 +44,8 @@
         "\\.ru"
         "\\Rakefile"
         "\\.rake"
-  :init (add-hook 'enh-ruby-mode-hook 'robe-mode)
-        (setq ruby-insert-encoding-magic-comment nil)
+  :hook robe-mode
+  :init (setq ruby-insert-encoding-magic-comment nil)
         (setq enh-ruby-add-encoding-comment-on-save nil)
         (setq enh-ruby-bounce-deep-indent t)
         (setq enh-ruby-hanging-brace-indent-level 2))
@@ -84,10 +84,6 @@
   :init (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
         (setq magit-push-current-set-remote-if-missing nil)
   :bind ("C-c s" . magit-status))
-
-(use-package minitest
-  :ensure t
-  :hook enh-ruby-mode)
 
 (use-package minimap
   :ensure t
