@@ -235,6 +235,14 @@
 (when (fboundp 'windmove-default-keybindings)
   (windmove-default-keybindings))
 
+;; Kill all other open buffers except the open one
+(defun kill-other-buffers ()
+  "Kill all other buffers."
+  (interactive)
+  (mapc 'kill-buffer
+        (delq (current-buffer)
+              (remove-if-not 'buffer-file-name (buffer-list)))))
+
 ;; Open line above - like O in vim
 (defun open-line-above ()
   "Open a line above the line the point is at. Then move to that line and indent according to mode"
