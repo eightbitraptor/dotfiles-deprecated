@@ -33,9 +33,17 @@
 
 (use-package counsel :ensure t)
 
+(use-package circadian
+  :ensure t
+  :config (setq calendar-latitude 51.2)
+          (setq calendar-longitude 0.2)
+          (setq circadian-themes '((:sunrise  . doom-nord-light)
+                                   (:sunset   . doom-challenger-deep)))
+          (circadian-setup))
+
 (use-package doom-themes
   :ensure t
-  :config (load-theme 'doom-challenger-deep t))
+  :defer t)
 
 (use-package enh-ruby-mode
   :ensure t
