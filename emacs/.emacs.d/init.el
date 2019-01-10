@@ -225,6 +225,17 @@
   :init (setq ws-butler-keep-whitespace-before-point nil)
         (ws-butler-global-mode))
 
+(use-package flycheck
+  :ensure t
+  :commands global-flycheck-mode
+  :init (add-hook 'prog-mode-hook 'global-flycheck-mode)
+  :config
+  (progn
+    ;; Settings
+    (setq-default flycheck-highlighting-mode 'lines
+                  flycheck-check-syntax-automatically '(save)
+                  flycheck-disabled-checkers '(c/c++-clang c/c++-gcc))))
+
 
 ;;; Language: Ruby
 
