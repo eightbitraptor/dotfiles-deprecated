@@ -1,4 +1,7 @@
+;;; Startup Time - START
 (defvar *emacs-load-start* (current-time))
+
+;;; Package system
 
 (eval-when-compile
   (require 'package)
@@ -21,17 +24,18 @@
   (require 'use-package)
   (setq use-package-always-ensure t))
 
-;; Package Configuration
-(use-package ag :ensure t)
 
-(use-package company
+;;; Initialisation and Environment setup
+
+(use-package exec-path-from-shell
   :ensure t
-  :init (setq company-dabbrev-downcase 0)
-        (setq company-idle-delay 0)
-  :config (global-company-mode)
-          (push 'company-robe company-backends))
+  :if (memq window-system '(mac ns x))
+  :init (setq exec-path-from-shell-variables '("PATH" "MANPATH" "GEM_HOME" "GEM_PATH"))
+        (setq exec-path-from-shell-check-startup-files nil)
+        (exec-path-from-shell-initialize))
 
-(use-package counsel :ensure t)
+
+;;; Themes and appearance
 
 (use-package circadian
   :ensure t
@@ -45,27 +49,77 @@
   :ensure t
   :defer t)
 
-(use-package enh-ruby-mode
+(use-package nyan-mode
   :ensure t
-  :mode "\\.rb"
-        "\\Gemfile"
-        "\\.ru"
-        "\\Rakefile"
-        "\\.rake"
-  :hook robe-mode
-  :init (setq ruby-insert-encoding-magic-comment nil)
-        (setq enh-ruby-add-encoding-comment-on-save nil)
-        (setq enh-ruby-bounce-deep-indent t)
-        (setq enh-ruby-hanging-brace-indent-level 2))
+  :init (nyan-mode))
 
-(use-package exec-path-from-shell
-  :ensure t
-  :if (memq window-system '(mac ns x))
-  :init (setq exec-path-from-shell-variables '("PATH" "MANPATH" "GEM_HOME" "GEM_PATH"))
-        (setq exec-path-from-shell-check-startup-files nil)
-        (exec-path-from-shell-initialize))
+(setq-default cursor-type 'bar)
+(toggle-scroll-bar -1)
+(menu-bar-mode 0)
+(tool-bar-mode 0)
+(setq initial-scratch-message "")
+(setq inhibit-startup-message t)
+(setq-default line-spacing 5)
+(global-display-line-numbers-mode t)
+(set-face-attribute 'default nil :font "Fira Code 14")
 
+
+;;; General editor behaviour
+
+(setq custom-file "~/.emacs.d/customisations.el")
+(load custom-file)
+
+(setq auto-save-default nil)
+(setq backup-directory-alist
+      (list (cons "." (expand-file-name "backup" user-emacs-directory))))
+(setq make-backup-files nil)
+
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)))
+
+(fset 'yes-or-no-p 'y-or-n-p)
+
+(when window-system
+  ((lambda ()
+     (global-unset-key "\C-z")
+     (global-unset-key "\C-x\C-z"))))
+
+(defun kill-other-buffers ()
+  "Kill all other buffers."
+  (interactive)
+  (mapc 'kill-buffer
+        (delq (current-buffer)
+              (remove-if-not 'buffer-file-name (buffer-list)))))
+
+(defun open-line-above ()
+  "Open a line above the line the point is at. Then move to that line and indent according to mode"
+  (interactive)
+  (indent-according-to-mode)
+  (move-beginning-of-line 1)
+  (newline)
+  (previous-line)
+  (indent-according-to-mode))
+(global-set-key (kbd "C-o") 'open-line-above)
+
+(global-set-key "\C-x\C-m" 'execute-extended-command)
+(global-set-key "\C-c\C-m" 'execute-extended-command)
+
+(global-set-key (kbd "s-<left>")  'shrink-window-horizontally)
+(global-set-key (kbd "s-<right>") 'enlarge-window-horizontally)
+(global-set-key (kbd "s-<up>")    'enlarge-window)
+(global-set-key (kbd "s-<down>")  'shrink-window)
+
+(global-set-key (kbd "s-<return>") 'toggle-frame-fullscreen)
+
+(setq-default indent-tabs-mode nil)
+(electric-indent-mode -1)
+
+
+;;; Navigation and Search
+
+(use-package ag :ensure t)
+(use-package counsel :ensure t)
 (use-package flx :ensure t)
+(use-package ivy-rich :ensure t)
 
 (use-package ivy
   :ensure t
@@ -84,28 +138,11 @@
         ("C-c j"   . counsel-git-grep)
         ("C-c k"   . counsel-ag))
 
-(use-package ivy-rich
-  :ensure t)
-
-(use-package magit
-  :ensure t
-  :init (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
-        (setq magit-push-current-set-remote-if-missing nil)
-  :bind ("C-c s" . magit-status))
-
 (use-package minimap
   :ensure t
   :config (setq minimap-window-location 'right)
           (setq minimap-automatically-delete-window nil)
   :bind ("C-c m" . minimap-mode))
-
-(use-package nyan-mode
-  :ensure t
-  :init (nyan-mode))
-
-(use-package org
-  :ensure t
-  :mode "\\.org")
 
 (use-package project-explorer
   :ensure t
@@ -160,23 +197,66 @@
   :bind-keymap ("C-c p" . projectile-command-map)
   :init (setq projectile-completion-system 'ivy))
 
-
 (use-package projectile-rails
   :ensure t
   :config (projectile-rails-global-mode t))
 
+(when (fboundp 'windmove-default-keybindings)
+  (windmove-default-keybindings))
+
+
+;;; Code utilities (completion, whitespace management, Git etc)
+
+(use-package company
+  :ensure t
+  :init (setq company-dabbrev-downcase 0)
+        (setq company-idle-delay 0)
+  :config (global-company-mode)
+          (push 'company-robe company-backends))
+
+(use-package magit
+  :ensure t
+  :init (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
+        (setq magit-push-current-set-remote-if-missing nil)
+  :bind ("C-c s" . magit-status))
+
+(use-package ws-butler
+  :ensure t
+  :init (setq ws-butler-keep-whitespace-before-point nil)
+        (ws-butler-global-mode))
+
+
+;;; Language: Ruby
+
 (use-package robe :ensure t)
 
-(use-package toml-mode
+(use-package enh-ruby-mode
   :ensure t
-  :mode "\\.toml")
+  :mode "\\.rb"
+        "\\Gemfile"
+        "\\.ru"
+        "\\Rakefile"
+        "\\.rake"
+  :hook robe-mode
+  :init (setq ruby-insert-encoding-magic-comment nil)
+        (setq enh-ruby-add-encoding-comment-on-save nil)
+        (setq enh-ruby-bounce-deep-indent t)
+        (setq enh-ruby-hanging-brace-indent-level 2))
+
+
+;;; language: Typescript
 
 (use-package tide
   :ensure t
   :mode ("\\.ts\\'" . typescript-mode)
+        ("\\.tsx\\'" . typescript-mode)
   :config (add-hook 'typescript-mode-hook
                     (lambda ()
                       (tide-setup)
+                      (flycheck-mode t)
+                      (setq flycheck-check-syntax-automatically '(save mode-enabled))
+                      (eldoc-mode t)
+                      (tide-hl-identifier-mode +1)
                       (setq typescript-indent-level 2)
                       (add-hook 'before-save-hook 'tide-format-before-save nil t))))
 
@@ -194,91 +274,38 @@
         (setq web-mode-code-indent-offset 2)
         (setq web-mode-enable-auto-indentation nil))
 
-(use-package ws-butler
+
+;;; Language: GraphQL
+
+(use-package graphql-mode
   :ensure t
-  :init (setq ws-butler-keep-whitespace-before-point nil)
-        (ws-butler-global-mode))
+  :mode "\\.graphql")
 
-(use-package yaml-mode :ensure t :mode "\\.yml" "\\.yaml")
 
-;; Customize Settingss
-(setq custom-file "~/.emacs.d/customisations.el")
-(load custom-file)
+;;; Language: Toml/Yaml
 
-;; Appearance
-(setq-default cursor-type 'bar)
-(toggle-scroll-bar -1)
-(menu-bar-mode 0)
-(tool-bar-mode 0)
-(setq initial-scratch-message "")
-(setq inhibit-startup-message t)
-(setq-default line-spacing 5)
-(global-display-line-numbers-mode t)
-(set-face-attribute 'default nil :font "Fira Code 14")
+(use-package toml-mode
+  :ensure t
+  :mode "\\.toml")
 
-;; Save/Backup file behaviour
-(setq auto-save-default nil)
-(setq backup-directory-alist
-      (list (cons "." (expand-file-name "backup" user-emacs-directory))))
-(setq make-backup-files nil)
+(use-package yaml-mode
+  :ensure t
+  :mode "\\.yml"
+        "\\.yaml")
 
-;; General editing settings
-;; These keybindings minimize the frame on OSX - which is annoying as fuck
-(when window-system
-  ((lambda ()
-     (global-unset-key "\C-z")
-     (global-unset-key "\C-x\C-z"))))
 
-;; y/n instead of yes/no for confirming things
-;; shift-arrows to switch windows
-(fset 'yes-or-no-p 'y-or-n-p)
-(when (fboundp 'windmove-default-keybindings)
-  (windmove-default-keybindings))
+;;; Org Mode
 
-;; Kill all other open buffers except the open one
-(defun kill-other-buffers ()
-  "Kill all other buffers."
-  (interactive)
-  (mapc 'kill-buffer
-        (delq (current-buffer)
-              (remove-if-not 'buffer-file-name (buffer-list)))))
+(use-package org
+  :ensure t
+  :mode "\\.org")
 
-;; Open line above - like O in vim
-(defun open-line-above ()
-  "Open a line above the line the point is at. Then move to that line and indent according to mode"
-  (interactive)
-  (indent-according-to-mode)
-  (move-beginning-of-line 1)
-  (newline)
-  (previous-line)
-  (indent-according-to-mode))
-(global-set-key (kbd "C-o") 'open-line-above)
 
-;; Use different keys for M-x
-(global-set-key "\C-x\C-m" 'execute-extended-command)
-(global-set-key "\C-c\C-m" 'execute-extended-command)
-
-;; resize windows
-(global-set-key (kbd "s-<left>")  'shrink-window-horizontally)
-(global-set-key (kbd "s-<right>") 'enlarge-window-horizontally)
-(global-set-key (kbd "s-<up>")    'enlarge-window)
-(global-set-key (kbd "s-<down>")  'shrink-window)
-
-(global-set-key (kbd "s-<return>") 'toggle-frame-fullscreen)
-
-;; Enable mouse support
-(setq mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)))
-
-;; Don't use tabs
-(setq-default indent-tabs-mode nil)
-
-;; Disable electric indent mode by default
-(electric-indent-mode -1)
-
-;; start a server if there's not one running so emacsclient will work
+;; Server
 (unless (bound-and-true-p server-running-p)
   (server-start))
 
+;; Startup Time - END
 (message "My .emacs loaded in %ds" (destructuring-bind
                                        (hi lo ms psec)
                                        (current-time)
