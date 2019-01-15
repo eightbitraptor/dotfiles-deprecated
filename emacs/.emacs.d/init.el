@@ -148,6 +148,10 @@
   :ensure t
   :bind ("C-c C-p" . project-explorer-toggle))
 
+(use-package imenu-list
+  :ensure t
+  :bind ("C-c C-t" . imenu-list-smart-toggle))
+
 (defun mvh-projectile-switch-project ()
   (exec-path-from-shell-initialize)
   (projectile-find-file))
