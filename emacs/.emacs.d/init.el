@@ -312,9 +312,16 @@
 
 ;;; Org Mode
 
+(use-package htmlize :ensure t)
 (use-package org
   :ensure t
-  :mode "\\.org")
+  :config (add-hook 'org-shiftup-final-hook 'windmove-up)
+          (add-hook 'org-shiftleft-final-hook 'windmove-left)
+          (add-hook 'org-shiftdown-final-hook 'windmove-down)
+          (add-hook 'org-shiftright-final-hook 'windmove-right)
+          (org-babel-do-load-languages 'org-babel-load-languages '((ruby . t)))
+  :init (chruby "2.5.3")
+  :mode ("\\.org" . org-mode))
 
 
 ;; Server
