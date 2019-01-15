@@ -244,6 +244,7 @@
 ;;; Language: Ruby
 
 (use-package robe :ensure t)
+(use-package chruby :ensure t)
 
 (use-package enh-ruby-mode
   :ensure t
