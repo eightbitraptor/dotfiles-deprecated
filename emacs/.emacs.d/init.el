@@ -3,27 +3,27 @@
 
 ;;; Package system
 
-(eval-when-compile
-  (require 'package)
-  (setq package-archives '(("melpa"        . "https://melpa.org/packages/")
-                           ("melpa-stable" . "https://stable.melpa.org/packages/")
-                           ("gnu"          . "https://elpa.gnu.org/packages/")
-                           ("org"          . "https://orgmode.org/elpa/")))
+(require 'package)
+(setq package-archives '(("melpa"        . "https://melpa.org/packages/")
+                         ("melpa-stable" . "https://stable.melpa.org/packages/")
+                         ("gnu"          . "https://elpa.gnu.org/packages/")
+                         ("org"          . "https://orgmode.org/elpa/")))
 
-  (setq package-archive-priorities '(("org"          . 30)
-                                     ("melpa-stable" . 20)
-                                     ("gnu"          . 10)
-                                     ("melpa"        . 0)))
+(setq package-archive-priorities '(("org"          . 30)
+                                   ("melpa-stable" . 20)
+                                   ("gnu"          . 10)
+                                   ("melpa"        . 0)))
 
-  (unless package--initialized (package-initialize t))
+(unless package--initialized (package-initialize t))
 
-  (unless (package-installed-p 'use-package)
-    (package-refresh-contents)
-    (package-install 'use-package))
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
-  (require 'use-package)
-  (setq use-package-always-ensure t))
+(setq use-package-always-ensure t)
 
+(setq package-enable-at-startup nil)
+(require 'use-package)
 
 ;;; Initialisation and Environment setup
 
