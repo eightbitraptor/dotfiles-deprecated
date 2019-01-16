@@ -118,6 +118,9 @@
 
 (use-package ag :ensure t)
 (use-package counsel :ensure t)
+(use-package crux
+    :ensure t
+    :bind (("C-a" . crux-move-beginning-of-line)))
 (use-package flx :ensure t)
 (use-package ivy-rich :ensure t)
 
