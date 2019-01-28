@@ -1,29 +1,55 @@
 let $PATH = system("printenv PATH")
 let $PATH = substitute($PATH, "\<C-J>$", "", "")
 
+set rtp+=/usr/local/opt/fzf
+
 set nocompatible
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'majutsushi/tagbar'
+" Make buffers work better
 Plug 'vim-scripts/bufkill.vim'
 Plug 'vim-scripts/scratch.vim'
-Plug 'tpope/vim-surround'
+
+" Git
 Plug 'tpope/vim-fugitive'
-Plug 'rodjek/vim-puppet'
+
+" Project navigation
 Plug 'scrooloose/nerdtree'
-Plug 'kien/ctrlp.vim'
-Plug 'nanotech/jellybeans.vim'
+Plug 'majutsushi/tagbar'
+Plug 'junegunn/fzf.vim'
+
+" Code utils
 Plug 'junegunn/vim-easy-align'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
+" Ruby/Rails
+Plug 'tpope/vim-rails'
+
+" Rust
 Plug 'wting/rust.vim'
-Plug 'vim-scripts/Align'
 Plug 'racer-rust/vim-racer'
-Plug 'aereal/vim-colors-japanesque'
-Plug 'lucidstack/ctrlp-mpc.vim'
+
+" Qt/Qml
 Plug 'peterhoeg/vim-qml'
-Plug 'noahfrederick/vim-hemisu'
+
+" Typescript
+"Plug 'mhartington/nvim-typescript', { 'do': ':UpdateRemotePlugins', 'for': ['typescript', 'typescript.tsx']}
+Plug 'leafgarland/typescript-vim', {'for': ['typescript', 'typescript.tsx']}
+Plug 'ianks/vim-tsx', { 'for': 'typescript.tsx' }
+
+" linting
 Plug 'w0rp/ale'
-Plug 'plan9-for-vimspace/acme-colors'
+
+" Theme & Appearance
+Plug 'nanotech/jellybeans.vim'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'morhetz/gruvbox'
+
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 call plug#end()
 
@@ -33,9 +59,8 @@ filetype indent on
 
 syntax on
 
-colo japanesque
 set background=dark
-
+color jellybeans
 set t_Co=256
 
 set clipboard=unnamed
@@ -50,7 +75,7 @@ set isk+=$,@,%,# " these aren't word dividers
 set showcmd " show current command in status bar
 set hidden " Allow hidden buffers
 set laststatus=2
-set ttimeoutlen=80
+set ttimeoutlen=0 timeoutlen=1000
 
 set mouse=a
 
@@ -58,7 +83,7 @@ set ruler " co-ords in status bar
 
 set showmode " Show modeline in status
 set colorcolumn=80
-hi ColorColumn ctermbg=255
+hi ColorColumn ctermbg=darkred
 
 set hlsearch
 set ignorecase
@@ -71,7 +96,9 @@ set encoding=utf-8
 set fileencoding=utf-8
 
 set wildmode=list:longest,list:full
-set wildignore+=*.o,*.pyc,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*,bundle,_html,env,tmp,node_modules,public/uploads,public/assets/source_maps,public
+set wildignore+=*.o,*.pyc,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*,bundle,
+      \_html,env,tmp,node_modules,public/uploads,public/assets/source_maps,
+      \public
 
 set nobackup
 set nowb
@@ -79,6 +106,8 @@ set noswapfile
 
 set lispwords+=module,describe,it,define-system
 
+let g:deoplete#enable_at_startup = 1
+let g:python3_host_prog = '/usr/local/bin/python3'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General Functions
@@ -94,120 +123,10 @@ function! InsertTabWrapper()
     endif
 endfunction
 
-
 function! CleanupWhiteSpace()
   execute "normal! ma"
   :%s/\s\+$//
   execute "normal! `a"
-endfunction
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Javascript Functions
-"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-function! JsUnMinify()
-    %s/{\ze[^\r\n]/{\r/g
-    %s/){/) {/g
-    %s/};\?\ze[^\r\n]/\0\r/g
-    %s/;\ze[^\r\n]/;\r/g
-    %s/[^\s]\zs[=&|]\+\ze[^\s]/ \0 /g
-    normal ggVG=
-endfunction
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Ruby Functions
-"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-function! RbOpenTestAlternate()
-  let new_file = RbAlternateForCurrentFile()
-  exec ':e ' . new_file
-endfunction
-
-function! RbOpenTestAlternateVsplit()
-  let new_file = RbAlternateForCurrentFile()
-  exec ':vs ' . new_file
-endfunction
-
-function! RbAlternateForCurrentFile()
-  let current_file = expand("%")
-  let new_file = current_file
-  let in_spec = match(current_file, '^spec/') != -1
-  let going_to_spec = !in_spec
-  let in_app = match(current_file, '\<controllers\>') != -1 ||
-        \      match(current_file, '\<presenters\>') != -1 ||
-        \      match(current_file, '\<services\>') != -1 ||
-        \      match(current_file, '\<decorators\>') != -1 ||
-        \      match(current_file, '\<models\>') != -1 ||
-        \      match(current_file, '\<helpers\>') != -1 ||
-        \      match(current_file, '\<views\>') != -1
-  if going_to_spec
-    if in_app
-      let new_file = substitute(new_file, '^app/', '', '')
-    end
-    let new_file = substitute(new_file, '\.rb$', '_spec.rb', '')
-    let new_file = 'spec/' . new_file
-  else
-    let new_file = substitute(new_file, '_spec\.rb$', '.rb', '')
-    let new_file = substitute(new_file, '^spec/', '', '')
-    if in_app
-      let new_file = 'app/' . new_file
-    end
-  endif
-  return new_file
-endfunction
-
-" Running tests
-function! RbRunTests(filename)
-    " Write the file and run tests for the given filename
-    :w
-    :silent !echo;echo;echo;echo;echo;echo;echo;echo;echo;echo
-    let l:params = '-f documentation'
-    if a:filename == ''
-      let l:params = ''
-    end
-
-    if match(a:filename, '\.feature$') != -1
-      exec ":!bundle exec cucumber --require features " . a:filename
-    elseif match(a:filename, '_test.rb$') != -1
-      exec ":!ruby -I test:lib " . a:filename
-    else
-        if filereadable("script/test")
-            exec ":!script/test " . a:filename
-        elseif filereadable("config/environment.rb")
-            exec ":!spring rspec ". l:params . " " . a:filename
-        elseif filereadable("Gemfile")
-            exec ":!bundle exec rspec ". l:params . " " . a:filename
-        else
-            exec ":!rspec " . l:params . " " . a:filename
-        end
-    end
-endfunction
-
-function! RbSetTestFile()
-    let t:mvh_test_file=@%
-endfunction
-
-function! RbRunTestFile(...)
-    if a:0
-        let command_suffix = a:1
-    else
-        let command_suffix = ""
-    endif
-
-    let in_test_file = match(expand("%"), '\(.feature\|_spec.rb\|_test.rb\)$') != -1
-    if in_test_file
-        call RbSetTestFile()
-    elseif !exists("t:mvh_test_file")
-        return
-    end
-    call RbRunTests(t:mvh_test_file . command_suffix)
-endfunction
-
-function! RbRunNearestTest()
-    let spec_line_number = line('.')
-    call RbRunTestFile(":" . spec_line_number)
 endfunction
 
 function! MakeDirectory()
@@ -216,6 +135,120 @@ function! MakeDirectory()
     echo "Make Directory did not return successfully"
   endif
   :w
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Running Tests
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" A project root is defined as a location that contains a .git directory,
+" somewhere in the file tree, above the file in question.
+"
+" By default, the project root is calculated based on the file path of the
+" open buffer when this command was called. Optionally a path can be passed in
+" as a second parameter
+"
+" Args:
+"   path: start looking for the project root from here
+function! GetProjectRoot(path)
+  let project_marker = '/.git/'
+  let search_dirs = split(expand(a:path), '/')
+  let new_project_root = getcwd()
+
+  let i = len(search_dirs)
+  while i >= 0
+    let try_project_root = '/' . join(search_dirs[0:i], '/')
+
+    if isdirectory(try_project_root . project_marker)
+      let new_project_root = try_project_root
+      break
+    endif
+    let i -= 1
+  endwhile
+
+  return new_project_root
+endfunction
+
+" Changes directory to the "project root" of a file runs a command and then
+" changes the dir back to it's previous value.
+"
+" Args:
+"   cmd (required) - the command to run
+"   path (optional) - a file path to use when finding the project root.
+" Returns:
+"   0
+function! WithProjectDirectory(cmd, ...) 
+  let path = get(a:, 1, expand("%"))
+
+  let old_project_root = getcwd()
+  let new_project_root = GetProjectRoot(path)
+
+  execute(":cd" . new_project_root)
+  execute(":!" . a:cmd)
+  execute(":cd" . old_project_root)
+endfunction
+
+" Assume we're reading an RSpec spec, if the filename ends with _spec.rb
+"
+" Args:
+"   file: a file path
+" Returns:
+"   0: the path does not end with _spec.rb
+"   1: the path ends with _spec.rb
+function! IsRspec(file)
+  return match(expand(a:file), '_spec.rb$') != -1
+endfunction
+
+" Assume we're in a Rails project if the string Rails.application appears in
+" config.ru in the project dir
+"
+" Args:
+"   file: a file path
+" Returns:
+"   0: if config.ru doesn't exist, or if config.ru doesn't contain the string
+"      Rails.application
+"   1: if config.ru exists and contains the string Rails.application
+function! IsRails(file)
+  let project_root = GetProjectRoot(expand(a:file))
+  let testfile = project_root . '/config.ru'
+
+  if !filereadable(testfile)
+    return 0
+  endif
+
+  let testfile_lines = join(readfile(testfile), " ")
+  let in_rails = 0
+  if testfile_lines =~ "Rails.application"
+    let in_rails = 1
+  endif
+
+  return in_rails
+endfunction
+
+function! TestRunFile()
+  let filetype = b:current_syntax
+
+  if filetype ==? 'ruby'
+    call RbRunTestFile()
+  elseif filetype ==? 'rust'
+    call RsRunTests()
+  endif
+endfunction
+
+function! RsRunTests()
+  call WithProjectDirectory("cargo test")
+endfunction
+
+function! RbRunTestFile()
+  execute(":w")
+  if IsRspec("%")
+    call WithProjectDirectory("bundle exec rspec " . "%")
+  elseif IsRails("%")
+    call WithProjectDirectory("bundle exec rails test " . "%")
+  else
+    call WithProjectDirectory("bundle exec ruby -Ilib:test " . "%")
+  endif
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -232,25 +265,19 @@ augroup RustShenanigans
   au!
   autocmd BufRead,BufNewFile *.rs
         \ set filetype=rust |
-        \ nnoremap ;t :!cargo test
         \ nnoremap ;F :w ! rustfmt %<cr>
 augroup END
 
 augroup RubyShenanigans
   au!
   autocmd BufRead,BufNewFile Gemfile,Rakefile,Capfile,*.rake
-    \ set filetype=ruby
+        \ set filetype=ruby
   autocmd BufRead,BufNewFile *.rb
         \ hi def Tab ctermbg=red guibg=red |
         \ hi def TrailingWS ctermbg=red guibg=red |
         \ hi rubyStringDelimiter ctermbg=NONE |
         \ map <C-s> :!ruby -cw %<cr> |
         \ map <F8> :!ctags -f TAGS --tag-relative=yes --exclude=public --exclude=_html --exclude=tmp --exclude=log --exclude=coverage --exclude=node_modules --extra=+f -R *<CR><CR> |
-        \ nnoremap // :call RbOpenTestAlternateVsplit()<cr> |
-        \ nnoremap /. :call RbOpenTestAlternate()<cr>|
-        \ nnoremap ;t :call RbRunTestFile()<cr>|
-        \ nnoremap ;T :call RbRunNearestTest()<cr>|
-        \ nnoremap ;a :call RbRunTests('')<cr>|
 augroup END
 
 augroup PythonShenanigans
@@ -287,11 +314,6 @@ noremap <Down>     :echoerr "Use j instead!"<CR>
 noremap <Left>     :echoerr "Use h instead!"<CR>
 noremap <Right>    :echoerr "Use l instead!"<CR>
 
-" buffer management
-nmap <F2> :bprev<cr>
-nmap <F3> :bnext<cr>
-nmap <F4> :BD<cr>
-
 " Beginning and end of line
 nnoremap <C-a> ^
 nnoremap <C-e> $
@@ -308,7 +330,6 @@ nnoremap <CR> :noh<CR><CR>
 " Command-][ to increase/decrease indentation
 vmap <D-]> >gv
 vmap <D-[> <gv
-vmap <Enter> <Plug>(EasyAlign)
 
 " Cleanup whitespace
 noremap <leader>c :call CleanupWhiteSpace()<cr>
@@ -326,8 +347,12 @@ noremap ,, <c-^>
 inoremap <tab> <c-r>=InsertTabWrapper()<cr>
 inoremap <s-tab> <c-n>
 
-" Open CtrlP in buffer mode
-nnoremap <c-b> :CtrlPBuffer<cr>
+" Use fzf
+nnoremap <c-p> :Files<CR>
+nnoremap <c-b> :Buffers<CR>
+
+" run tests
+nnoremap ;t :call TestRunFile()<cr>
 
 nmap <F6> :call MakeDirectory()<cr>
 nmap Q :qa!<cr>
