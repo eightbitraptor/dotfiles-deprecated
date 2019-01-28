@@ -37,17 +37,12 @@
 
 ;;; Themes and appearance
 
-(use-package circadian
-  :ensure t
-  :config (setq calendar-latitude 51.2)
-          (setq calendar-longitude 0.2)
-          (setq circadian-themes '((:sunrise  . doom-nord-light)
-                                   (:sunset   . doom-challenger-deep)))
-          (circadian-setup))
+(use-package feebleline
+    :ensure t)
 
-(use-package doom-themes
+(use-package jbeans-theme
   :ensure t
-  :defer t)
+  :init (load-theme 'jbeans t))
 
 (use-package nyan-mode
   :ensure t
@@ -141,6 +136,9 @@
         ("C-c j"   . counsel-git-grep)
         ("C-c k"   . counsel-ag))
 
+(use-package ivy-hydra
+  :ensure t)
+
 (use-package minimap
   :ensure t
   :config (setq minimap-window-location 'right)
@@ -156,6 +154,7 @@
   :bind ("C-c C-t" . imenu-list-smart-toggle))
 
 (defun mvh-projectile-switch-project ()
+  "Load the environment from my local shell to capture env before finding a file."
   (exec-path-from-shell-initialize)
   (projectile-find-file))
 
@@ -248,6 +247,7 @@
 
 (use-package robe :ensure t)
 (use-package chruby :ensure t)
+(use-package minitest :ensure t)
 
 (use-package enh-ruby-mode
   :ensure t
