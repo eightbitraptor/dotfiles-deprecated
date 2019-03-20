@@ -24,6 +24,8 @@ Plug 'junegunn/vim-easy-align'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
 
 " Ruby/Rails
 Plug 'tpope/vim-rails'
@@ -46,6 +48,7 @@ Plug 'w0rp/ale'
 " Theme & Appearance
 Plug 'nanotech/jellybeans.vim'
 Plug 'NLKNguyen/papercolor-theme'
+Plug 'aereal/vim-colors-japanesque'
 Plug 'morhetz/gruvbox'
 
 Plug 'vim-airline/vim-airline'
@@ -178,7 +181,7 @@ endfunction
 "   path (optional) - a file path to use when finding the project root.
 " Returns:
 "   0
-function! WithProjectDirectory(cmd, ...) 
+function! WithProjectDirectory(cmd, ...)
   let path = get(a:, 1, expand("%"))
 
   let old_project_root = getcwd()
@@ -229,6 +232,7 @@ endfunction
 function! TestRunFile()
   let filetype = b:current_syntax
 
+  " TODO: refactor to use some kind of intelligent dispatch?
   if filetype ==? 'ruby'
     call RbRunTestFile()
   elseif filetype ==? 'rust'
@@ -260,6 +264,7 @@ autocmd VimEnter                    * set vb t_vb=
 autocmd BufRead,BufNewFile Makefile * set noet
 autocmd BufRead,BufNewFile          *.tsv set noet
 autocmd BufRead,BufNewFile          *.clj set filetype=clojure
+autocmd BufWritePre                 * %s/\s\+$//e
 
 augroup RustShenanigans
   au!
@@ -277,8 +282,9 @@ augroup RubyShenanigans
         \ hi def TrailingWS ctermbg=red guibg=red |
         \ hi rubyStringDelimiter ctermbg=NONE |
         \ map <C-s> :!ruby -cw %<cr> |
-        \ map <F8> :!ctags -f TAGS --tag-relative=yes --exclude=public --exclude=_html --exclude=tmp --exclude=log --exclude=coverage --exclude=node_modules --extra=+f -R *<CR><CR> |
+        \ map <F8> :!ruby-tags
 augroup END
+let g:ruby_indent_assignment_style = 'variable'
 
 augroup PythonShenanigans
   au!
@@ -364,4 +370,3 @@ let g:ale_lint_on_enter = 0
 let g:ale_linters = {
 \   'javascript': ['eslint'],
 \}
-

@@ -3,6 +3,7 @@
   excludesfile = ~/.gitignore
   autocrlf = input
 [alias]
+  praise = blame
   st = status
   br = branch -vv
   lg = log -p
@@ -10,11 +11,12 @@
   co = checkout
   patch = add -p
   staged = diff --staged
-  f = fetch -p
+  fetch = fetch -p
   wtf = blame
   ignore = update-index --assume-unchanged
   no-ignore = update-index --no-assume-unchanged
   ignored = !git ls-files -v | grep "^[[:lower:]]"
+  touch = add --intent-to-add
 [push]
   default = upstream
 [merge]
@@ -52,3 +54,8 @@
 	version = 2
 [commit]
 	verbose = true
+[credential]
+	helper = osxkeychain
+[http "https://git-mirror.shopifycloud.com"]
+	cookieFile = /tmp/galaxy.cookies
+	saveCookies = true

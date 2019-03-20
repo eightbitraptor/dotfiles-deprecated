@@ -40,13 +40,13 @@
 (use-package feebleline
     :ensure t)
 
-(use-package jbeans-theme
+(use-package doom-themes
   :ensure t
-  :init (load-theme 'jbeans t))
+  :init (load-theme 'doom-tomorrow-night t))
 
-(use-package nyan-mode
-  :ensure t
-  :init (nyan-mode))
+;;(use-package nyan-mode
+;;  :ensure t
+;;  :init (nyan-mode))
 
 (setq-default cursor-type 'bar)
 (toggle-scroll-bar -1)
@@ -54,9 +54,8 @@
 (tool-bar-mode 0)
 (setq initial-scratch-message "")
 (setq inhibit-startup-message t)
-(setq-default line-spacing 5)
 (global-display-line-numbers-mode t)
-(set-face-attribute 'default nil :font "Fira Code 14")
+(set-face-attribute 'default nil :font "Noto Mono for Powerline 16")
 
 
 ;;; General editor behaviour
@@ -130,7 +129,6 @@
   :config (ivy-rich-mode 1)
   :bind ("C-s"     . swiper)
         ("M-x"     . counsel-M-x)
-        ("C-x C-f" . counsel-fzf)
         ("<f2> i"  . counsel-info-lookup-symbol)
         ("C-c u "  . counsel-unicode-char)
         ("C-c j"   . counsel-git-grep)
@@ -242,6 +240,12 @@
                   flycheck-check-syntax-automatically '(save)
                   flycheck-disabled-checkers '(c/c++-clang c/c++-gcc))))
 
+(use-package dumb-jump
+  :ensure t
+  :commands dumb-jump-mode
+  :init (setq dumb-jump-force-searcher 'rg)
+        (setq dumb-jump-selector 'ivy)
+        (dumb-jump-mode))
 
 ;;; Language: Ruby
 
@@ -328,8 +332,8 @@
 
 
 ;; Server
-(unless (bound-and-true-p server-running-p)
-  (server-start))
+;;(unless (bound-and-true-p server-running-p)
+;; (server-start))
 
 ;; Startup Time - END
 (message "My .emacs loaded in %ds" (destructuring-bind
