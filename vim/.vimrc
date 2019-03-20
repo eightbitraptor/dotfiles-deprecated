@@ -37,6 +37,9 @@ Plug 'racer-rust/vim-racer'
 " Qt/Qml
 Plug 'peterhoeg/vim-qml'
 
+" Nix
+Plug 'LnL7/vim-nix'
+
 " Typescript
 "Plug 'mhartington/nvim-typescript', { 'do': ':UpdateRemotePlugins', 'for': ['typescript', 'typescript.tsx']}
 Plug 'leafgarland/typescript-vim', {'for': ['typescript', 'typescript.tsx']}
@@ -63,7 +66,7 @@ filetype indent on
 syntax on
 
 set background=dark
-color jellybeans
+colorscheme japanesque
 set t_Co=256
 
 set clipboard=unnamed
@@ -86,7 +89,6 @@ set ruler " co-ords in status bar
 
 set showmode " Show modeline in status
 set colorcolumn=80
-hi ColorColumn ctermbg=darkred
 
 set hlsearch
 set ignorecase
