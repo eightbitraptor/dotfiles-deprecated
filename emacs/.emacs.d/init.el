@@ -306,7 +306,7 @@
   :mode "\\.graphql")
 
 
-;;; Language: Toml/Yaml
+;;; Language: Toml/Yaml/Markdown
 
 (use-package toml-mode
   :ensure t
@@ -316,6 +316,11 @@
   :ensure t
   :mode "\\.yml"
         "\\.yaml")
+
+(use-package markdown-mode
+  :ensure t
+  :mode "\\.md"
+        "\\.markdown")
 
 
 ;;; Org Mode
