@@ -337,6 +337,9 @@
   :init (chruby "2.5.3")
   :mode ("\\.org" . org-mode))
 
+(use-package org-journal
+  :ensure t)
+
 
 ;; Server
 ;;(unless (bound-and-true-p server-running-p)
