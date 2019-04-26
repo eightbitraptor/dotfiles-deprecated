@@ -8,26 +8,6 @@ stty start ''
 stty -ixon
 stty -ixoff
 
-git_push_set_upstream(){
-  git push --set-upstream origin `parse_git_branch_no_brackets`
-}
-
-parse_git_branch_no_brackets() {
-  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
-}
-
-parse_git_branch() {
-  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/[\1] /'
-}
-
-dockerfiles() {
-  if [ "$1" == "ls" ]; then
-    ls $HOME/dockerfiles
-  else
-    cd "$HOME/dockerfiles/$1/"
-  fi
-}
-
 _dockerfiles_comp() {
   local cur=${COMP_WORDS[COMP_CWORD]}
   COMPREPLY=( $(compgen -W "`ls $HOME/dockerfiles`") $cur)
