@@ -54,8 +54,9 @@
 (tool-bar-mode 0)
 (setq initial-scratch-message "")
 (setq inhibit-startup-message t)
+(setq-default line-spacing 5)
 (global-display-line-numbers-mode t)
-(set-face-attribute 'default nil :font "Noto Mono for Powerline 16")
+(set-face-attribute 'default nil :font "Fira Code 14")
 
 
 ;;; General editor behaviour
