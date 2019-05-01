@@ -19,7 +19,7 @@ complete -F _dockerfiles_comp dockerfiles
 alias d=docker
 alias dc=docker-compose
 
-alias ec="emacsclient -nc"
+alias ec="emacsclient -na"
 
 alias tra='transmission-remote'
 
