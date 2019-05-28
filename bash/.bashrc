@@ -14,12 +14,19 @@ _dockerfiles_comp() {
 }
 complete -F _dockerfiles_comp dockerfiles
 
+function my_emacs {
+  local emacs_bin=/usr/local/bin/emacs
+
+  emacsclient "$@" --no-wait || \
+    ($emacs_bin --bg-daemon --no-wait && emacsclient "$@" --no-wait)
+}
+
 # Aliases
 
 alias d=docker
 alias dc=docker-compose
 
-alias ec="emacsclient -na"
+alias emacs=my_emacs
 
 alias tra='transmission-remote'
 

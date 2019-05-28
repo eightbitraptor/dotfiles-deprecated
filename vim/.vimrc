@@ -21,6 +21,7 @@ Plug 'junegunn/fzf.vim'
 
 " Code utils
 Plug 'junegunn/vim-easy-align'
+Plug 'godlygeek/tabular'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -66,7 +67,6 @@ filetype indent on
 syntax on
 
 set background=dark
-colorscheme japanesque
 set t_Co=256
 
 set clipboard=unnamed
@@ -368,7 +368,9 @@ map :W :w
 map :E :e
 
 let g:ale_lint_on_text_changed = 'never'
+let g:ale_ruby_rubocop_executable = 'bundle'
 let g:ale_lint_on_enter = 0
 let g:ale_linters = {
+\   'ruby': ['rubocop'],
 \   'javascript': ['eslint'],
 \}

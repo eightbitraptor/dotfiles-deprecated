@@ -42,7 +42,7 @@
 
 (use-package doom-themes
   :ensure t
-  :init (load-theme 'doom-tomorrow-night t))
+  :init (load-theme 'doom-spacegrey t))
 
 ;;(use-package nyan-mode
 ;;  :ensure t
@@ -219,6 +219,7 @@
   :config (global-company-mode)
           (push 'company-robe company-backends))
 
+(setq vc-follow-symlinks t)
 (use-package magit
   :ensure t
   :init (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
@@ -238,6 +239,7 @@
   (progn
     ;; Settings
     (setq-default flycheck-highlighting-mode 'lines
+                  flycheck-disabled-checkers '(emacs-lisp-checkdoc)
                   flycheck-check-syntax-automatically '(save)
                   flycheck-disabled-checkers '(c/c++-clang c/c++-gcc))))
 
@@ -249,6 +251,17 @@
         (dumb-jump-mode))
 
 ;;; Language: Ruby
+
+(defun ruby-frozen-string-literal ()
+  "Check the current buffer for the magic comment # frozen_string_literal: true.
+If the comment doesn't exist, offer to insert it."
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (unless (string= (thing-at-point 'line)
+                     "# frozen_string_literal: true\n")
+      (when (y-or-n-p "Insert frozen string literal statement? ")
+        (insert "# frozen_string_literal: true\n\n")))))
 
 (use-package robe :ensure t)
 (use-package chruby :ensure t)
@@ -265,6 +278,9 @@
   :init (setq ruby-insert-encoding-magic-comment nil)
         (setq enh-ruby-add-encoding-comment-on-save nil)
         (setq enh-ruby-bounce-deep-indent t)
+        (setq flycheck-command-wrapper-function
+              (lambda (command)
+                (append '("bundle" "exec") command)))
         (setq enh-ruby-hanging-brace-indent-level 2))
 
 
@@ -308,6 +324,9 @@
 
 
 ;;; Language: Toml/Yaml/Markdown
+
+(setq markdown-preview-stylesheets
+      (list "http://thomasf.github.io/solarized-css/solarized-light.min.css"))
 
 (use-package toml-mode
   :ensure t
