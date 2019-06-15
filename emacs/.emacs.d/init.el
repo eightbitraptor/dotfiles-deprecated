@@ -126,7 +126,7 @@
                 (t      . ivy--regex-fuzzy)))
         (ivy-mode 1)
   :config (ivy-rich-mode 1)
-  :bind ("C-s"     . swiper)
+  :bind ;;("C-s"     . swiper)
         ("M-x"     . counsel-M-x)
         ("<f2> i"  . counsel-info-lookup-symbol)
         ("C-c u "  . counsel-unicode-char)
