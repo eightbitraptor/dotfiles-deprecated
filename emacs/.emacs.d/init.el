@@ -108,7 +108,6 @@
 (setq-default indent-tabs-mode nil)
 (electric-indent-mode -1)
 
-
 ;;; Navigation and Search
 
 (use-package ag :ensure t)
@@ -123,9 +122,8 @@
   :ensure t
   :init (setq ivy-use-virtual-buffers t)
         (setq ivy-re-builders-alist
-              ;; I want this to be ivy--regex-fuzzy but it's just too slow in core
               '((swiper . ivy--regex-plus)
-                (t      . ivy--regex-plus)))
+                (t      . ivy--regex-fuzzy)))
         (ivy-mode 1)
   :config (ivy-rich-mode 1)
   :bind ("C-s"     . swiper)
@@ -155,6 +153,11 @@
 (defun mvh-projectile-switch-project ()
   "Load the environment from my local shell to capture env before finding a file."
   (exec-path-from-shell-initialize)
+  (if (string= "shopify" (projectile-project-name))
+      (progn
+        (setq ivy-re-builders-alist
+              '((swiper . ivy--regex-plus)
+                (t      . ivy--regex-plus)))))
   (projectile-find-file))
 
 (use-package projectile
