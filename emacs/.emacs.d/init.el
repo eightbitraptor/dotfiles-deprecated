@@ -281,6 +281,7 @@ If the comment doesn't exist, offer to insert it."
   :init (setq ruby-insert-encoding-magic-comment nil)
         (setq enh-ruby-add-encoding-comment-on-save nil)
         (setq enh-ruby-bounce-deep-indent t)
+        (setq enh-ruby-deep-indent-construct nil)
         (setq flycheck-command-wrapper-function
               (lambda (command)
                 (append '("bundle" "exec") command)))
