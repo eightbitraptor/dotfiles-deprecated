@@ -42,9 +42,9 @@
   :ensure t
   :init (load-theme 'doom-spacegrey t))
 
-;;(use-package nyan-mode
-;;  :ensure t
-;;  :init (nyan-mode))
+(use-package nyan-mode
+  :ensure t
+  :init (nyan-mode))
 
 (setq-default cursor-type 'bar)
 (toggle-scroll-bar -1)
