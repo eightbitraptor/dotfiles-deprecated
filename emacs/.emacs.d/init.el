@@ -4,6 +4,8 @@
 ;;; Package system
 
 (require 'package)
+(package-initialize)
+(setq package-enable-at-startup nil)
 (setq package-archives '(("melpa"        . "https://melpa.org/packages/")
                          ("melpa-stable" . "https://stable.melpa.org/packages/")
                          ("gnu"          . "https://elpa.gnu.org/packages/")
@@ -14,15 +16,11 @@
                                    ("gnu"          . 10)
                                    ("melpa"        . 0)))
 
-(unless package--initialized (package-initialize t))
-
+;; Bootstrap `use-package'
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
 
-(setq use-package-always-ensure t)
-
-(setq package-enable-at-startup nil)
 (require 'use-package)
 
 ;;; Initialisation and Environment setup
@@ -57,7 +55,6 @@
 (setq-default line-spacing 5)
 (global-display-line-numbers-mode t)
 (set-face-attribute 'default nil :font "Fira Code 16")
-
 
 ;;; General editor behaviour
 
