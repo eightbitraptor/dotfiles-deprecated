@@ -17,6 +17,7 @@
   no-ignore = update-index --no-assume-unchanged
   ignored = !git ls-files -v | grep "^[[:lower:]]"
   touch = add --intent-to-add
+  workprofile = config --local user.email \"matt.valentinehouse@shopify.com\"
 [push]
   default = upstream
 [merge]
