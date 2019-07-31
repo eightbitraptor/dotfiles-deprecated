@@ -30,9 +30,6 @@ Plug 'junegunn/vim-easy-align'
 Plug 'godlygeek/tabular'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'roxma/nvim-yarp'
-Plug 'roxma/vim-hug-neovim-rpc'
 
 " Ruby/Rails
 Plug 'tpope/vim-rails'
@@ -74,6 +71,7 @@ syntax on
 
 set background=dark
 set t_Co=256
+colo jellybeans
 
 set clipboard=unnamed
 
@@ -116,9 +114,6 @@ set nowb
 set noswapfile
 
 set lispwords+=module,describe,it,define-system
-
-let g:deoplete#enable_at_startup = 1
-let g:python3_host_prog = '/usr/local/bin/python3'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General Functions
