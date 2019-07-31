@@ -48,7 +48,7 @@
 [http]
   sslverify = false
 [include]
-  path = .gitconfig.local
+  path = ~/.gitconfig.local
 [diff]
 	algorithm = patience
 [protocol]
