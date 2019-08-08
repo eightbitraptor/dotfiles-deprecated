@@ -4,6 +4,8 @@ let $PATH = substitute($PATH, "\<C-J>$", "", "")
 set rtp+=/usr/local/opt/fzf
 
 set nocompatible
+let skip_defaults_vim=1
+set viminfo=
 
 call plug#begin('~/.vim/plugged')
 
