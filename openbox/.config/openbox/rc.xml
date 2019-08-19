@@ -176,9 +176,9 @@
   <keyboard>
     <chainQuitKey>C-g</chainQuitKey>
     <keybind key="W-l">
-	<action name="execute">
-		<command>i3lock</command>
-        </action>
+      <action name="execute">
+        <command>i3lock</command>
+      </action>
     </keybind>
     <keybind key="A-space">
       <action name="Execute">
