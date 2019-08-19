@@ -47,10 +47,12 @@ export PATH=/Users/mattvh/bin:/Users/mattvh/.cargo/bin:/usr/local/bin:/usr/bin:/
 umask 0022
 shopt -s histappend
 
-stty stop ''
-stty start ''
-stty -ixon
-stty -ixoff
+if [[ $- == *i* ]]; then
+  stty stop ''
+  stty start ''
+  stty -ixon
+  stty -ixoff
+fi
 
 _dockerfiles_comp() {
   local cur=${COMP_WORDS[COMP_CWORD]}
