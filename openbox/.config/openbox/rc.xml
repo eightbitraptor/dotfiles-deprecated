@@ -203,19 +203,19 @@
     <keybind key="A-f">
       <action name="ToggleMaximizeFull"/>
     </keybind>
-    <keybind key="S-A-u">
+    <keybind key="XF86AudioMute">
       <action name="Execute">
-        <command>mixer vol +5</command>
+        <command>pactl set-sink-mute @DEFAULT_SINK@ toggle</command>
       </action>
     </keybind>
-    <keybind key="S-A-d">
+    <keybind key="XF86AudioLowerVolume">
       <action name="Execute">
-        <command>mixer vol -5</command>
+        <command>pactl set-sink-volume @DEFAULT_SINK@ -5%</command>
       </action>
     </keybind>
-    <keybind key="S-A-m">
+    <keybind key="XF86AudioRaiseVolume">
       <action name="Execute">
-        <command>amixer set Master toggle</command>
+        <command>pactl set-sink-volume @DEFAULT_SINK@ +5%</command>
       </action>
     </keybind>
     <keybind key="F12">
