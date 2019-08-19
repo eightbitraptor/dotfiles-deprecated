@@ -5,3 +5,4 @@ local_data
 newsboat/*
 .DS_Store
 emacs
+*/**/.uuid
