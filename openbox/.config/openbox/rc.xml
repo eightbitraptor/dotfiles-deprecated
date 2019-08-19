@@ -191,7 +191,7 @@
         <raise>yes</raise>
       </action>
     </keybind>
-    <keybind key="S-A-t">
+    <keybind key="S-A-Tab">
       <action name="PreviousWindow">
         <bar>no</bar>
         <raise>yes</raise>
