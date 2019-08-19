@@ -51,8 +51,6 @@
   path = ~/.gitconfig.local
 [diff]
 	algorithm = patience
-[protocol]
-	version = 2
 [commit]
 	verbose = true
 [credential]
