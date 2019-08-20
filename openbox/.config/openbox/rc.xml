@@ -214,6 +214,16 @@
         <command>pactl set-sink-volume @DEFAULT_SINK@ +5%</command>
       </action>
     </keybind>
+    <keybind key="XF86MonBrightnessUp">
+      <action name="Execute">
+        <command>sudo light -A 10</command>
+      </action>
+    </keybind>
+    <keybind key="XF86MonBrightnessDown">
+      <action name="Execute">
+        <command>sudo light -U 10</command>
+      </action>
+    </keybind>
     <keybind key="F12">
       <action name="MoveResizeTo">
         <monitor>next</monitor>
