@@ -1,5 +1,8 @@
-/bin/bash $HOME/.config/polybar/launch.sh &
+# Set the wallpaper (from the previous session)
 /bin/bash $HOME/.fehbg &
 
-setxkbmap -option "ctrl:nocaps" &
+# Use Caps lock key as a third CTRL key
+/usr/bin/setxkbmap -option "ctrl:nocaps" &
 
+# Compositor for transparency (important for Ulauncher - it looks shit otherwise)
+/usr/bin/compton &
