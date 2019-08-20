@@ -181,11 +181,6 @@
         <command>i3lock</command>
       </action>
     </keybind>
-    <keybind key="A-space">
-      <action name="Execute">
-        <command>rofi -show run -font &quot;GohuFont 11&quot;</command>
-      </action>
-    </keybind>
     <keybind key="A-Tab">
       <action name="NextWindow">
         <bar>no</bar>
