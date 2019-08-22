@@ -6,3 +6,6 @@
 
 # Compositor for transparency (important for Ulauncher - it looks shit otherwise)
 /usr/bin/compton &
+
+# Polybar for simple observability
+/bin/bash $HOME/.config/polybar/launch.sh
