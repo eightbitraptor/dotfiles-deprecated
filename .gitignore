@@ -6,3 +6,4 @@ newsboat/*
 .DS_Store
 emacs
 */**/.uuid
+mpd/.mpd/*
