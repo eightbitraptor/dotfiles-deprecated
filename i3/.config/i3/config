@@ -106,11 +106,15 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
+# Sreen brightness controls
+bindsym XF86MonBrightnessUp exec sudo light -A 10
+bindsym XF86MonBrightnessDown exec sudo light -U 10
+
 # Pulse Audio Controls {{{
-# bindsym XF86AudioMute        exec --no-startup-id pactl set-sink-mute   0 toggle
-# bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5%
-# bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5%
-# # }}}
+bindsym XF86AudioMute        exec --no-startup-id pactl set-sink-mute   0 toggle
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5%
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5%
+
 set $mode_volume Volume (d) down, (u) up, (m) toggle mute, (p) pavucontrol
 mode "$mode_volume" {
     bindsym d exec --no-startup-id pactl set-sink-volume 0 -5%
