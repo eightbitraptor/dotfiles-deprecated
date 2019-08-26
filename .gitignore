@@ -7,3 +7,6 @@ newsboat/*
 emacs
 */**/.uuid
 mpd/.mpd/*
+music/Music/Library/*
+music/Music/Unsorted/*
+music/Music/Ripped/*
