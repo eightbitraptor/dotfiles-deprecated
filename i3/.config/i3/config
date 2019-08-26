@@ -26,8 +26,8 @@ floating_modifier $mod
 
 font pango:monospace 8
 
-gaps inner 0
-gaps outer 0
+gaps inner 4
+gaps outer 2
 
 bindsym $mod+Return exec urxvt
 bindsym $mod+Shift+q kill
@@ -172,12 +172,9 @@ for_window [class="^.*"] border pixel 2
 new_window 1pixel
 
 exec_always --no-startup-id ~/.config/polybar/launch.sh
-exec $HOME/.fehbg
+exec wal -R -a 95
 exec compton
 exec setxkbmap -option "ctrl:nocaps"
-exec mpd
-exec dropbox start
-exec urxvt
 
 assign [class="Slack"] $workspace8
 assign [class="TelegramDesktop"] $workspace8
