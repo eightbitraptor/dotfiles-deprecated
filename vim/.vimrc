@@ -1,7 +1,11 @@
 let $PATH = system("printenv PATH")
 let $PATH = substitute($PATH, "\<C-J>$", "", "")
 
-set rtp+=/usr/local/opt/fzf
+if has("macunix")
+  set rtp+=/usr/local/opt/fzf
+else
+  set rtp+=/usr/share/doc/fzf/examples
+endif
 
 set nocompatible
 let skip_defaults_vim=1
