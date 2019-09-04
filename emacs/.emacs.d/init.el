@@ -54,10 +54,8 @@
 (setq inhibit-startup-message t)
 (setq-default line-spacing 5)
 (global-display-line-numbers-mode t)
-(cond
- ((eq (window-system) 'x)
-  (set-face-attribute 'default nil :font "Fira Code 12"))
- (set-face-attribute 'default nil :font "Fira Code 16"))
+(cond ((eq (window-system) 'x)  (set-face-attribute 'default nil :font "Fira Code 12"))
+      ((eq (window-system) 'ns) (set-face-attribute 'default nil :font "Fira Code 16")))
 
 ;;; General editor behaviour
 
