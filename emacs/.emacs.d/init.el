@@ -40,7 +40,7 @@
 
 (use-package doom-themes
   :ensure t
-  :init (load-theme 'doom-spacegrey t))
+  :init (load-theme 'eink t))
 
 (use-package nyan-mode
   :ensure t
