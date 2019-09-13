@@ -36,11 +36,12 @@
 ;;; Themes and appearance
 
 (use-package feebleline
-    :ensure t)
+    :ensure t
+    :config (feebleline-mode t))
 
 (use-package doom-themes
   :ensure t
-  :init (load-theme 'eink t))
+  :init (load-theme 'doom-spacegrey t))
 
 (use-package nyan-mode
   :ensure t
