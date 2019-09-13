@@ -107,6 +107,8 @@
 (setq-default indent-tabs-mode nil)
 (electric-indent-mode -1)
 
+(delete-selection-mode t)
+
 ;;; Navigation and Search
 
 (use-package ag :ensure t)
