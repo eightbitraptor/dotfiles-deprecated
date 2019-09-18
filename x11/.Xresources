@@ -15,12 +15,19 @@ URxvt.letterSpace: -1
 URxvt*depth: 32
 URxvt*background: rgba:0000/0000/0200/c800
 
-
-! rofi
-rofi.font: xft:Noto Sans 16
-rofi.terminal: urxvt
-rofi.ssh-client: ssh
-rofi.ssh-command: {terminal} -e "{ssh-client} {host}"
+! Rofi
+rofi.color-enabled:     true
+rofi.color-window:      argb:dc111111, argb:dc111111
+rofi.color-normal:      argb:00333333, #ffffff, argb:00333333, argb:00333333, argb:ffefa211
+rofi.color-urgent:      argb:00333333, #ffffff, argb:00333333, argb:00333333, argb:ffefa211
+rofi.color-active:      argb:00333333, #ffffff, argb:00333333, argb:00333333, argb:ffefa211
+rofi.combi-modi: window,drun,run
+rofi.font: Noto Sans 18
+rofi.opacity: 80
+rofi.fullscreen: false
+rofi.width: 800
+rofi.padding: 10
+rofi.lines: 10
 
 ! Clickable URLs
 URxvt.url-launcher: firefox
