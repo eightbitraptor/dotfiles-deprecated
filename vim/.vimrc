@@ -313,14 +313,25 @@ augroup CShenanigans
         \ set tabstop=8 shiftwidth=4 smarttab expandtab |
 augroup END
 
-augroup HighlightPeskyTabs
-  au!
-  autocmd BufRead,BufNewFile *
-      \ syn match Tab "\t" |
-      \ syn match TrailingWS "\s\+$" |
-      \ hi def Tab ctermbg=red guibg=red |
-      \ hi def TrailingWS ctermbg=red guibg=red |
-augroup END
+function! ToggleTabHighlightBehaviour()
+  if !exists('#HighlightPeskyTabs#BufRead,BufNewFile')
+    augroup HighlightPeskyTabs
+      autocmd!
+      autocmd BufRead,BufNewFile *
+            \ syn match Tab "\t" |
+            \ syn match TrailingWS "\s\+$" |
+            \ hi def Tab ctermbg=red guibg=red |
+            \ hi def TrailingWS ctermbg=red guibg=red |
+    augroup END
+  else
+    augroup HighlightPeskyTabs
+      autocmd!
+    augroup END
+  endif
+
+  :e %
+endfunction
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Keyboard Mapping
@@ -349,6 +360,8 @@ nnoremap <CR> :noh<CR><CR>
 vmap <D-]> >gv
 vmap <D-[> <gv
 
+" Hightlight literal Tabs
+noremap <leader>w :call ToggleTabHighlightBehaviour()<cr>
 " Cleanup whitespace
 noremap <leader>c :call CleanupWhiteSpace()<cr>
 
