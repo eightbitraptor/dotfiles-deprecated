@@ -41,7 +41,7 @@ export PS1="$YELLOW$CURRENT_DATE $LIGHT_RED\$(parse_git_branch)$RESET$BLUE($P_US
 export CLICOLOR=1
 export LSCOLORS=gxFxCxDxBxegedabagacad
 
-export PATH=/Users/mattvh/bin:/Users/mattvh/.cargo/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/.local/bin
+export PATH=/snap/bin:/Users/mattvh/bin:/Users/mattvh/.cargo/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/.local/bin
 
 
 umask 0022
