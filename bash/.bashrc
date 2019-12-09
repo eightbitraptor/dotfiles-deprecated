@@ -107,5 +107,6 @@ fi
 eval "$(direnv hook bash)"
 
 [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
+[[ -r "/usr/share/bash-completion/bash_completion" ]] && . "/usr/share/bash-completion/bash_completion"
 
 [[ -f /opt/dev/dev.sh ]] && . /opt/dev/dev.sh
