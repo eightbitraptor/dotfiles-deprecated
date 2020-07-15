@@ -1,6 +1,9 @@
 bundler/.bundle/cache/**/*
 vscode
 vim/.vim
+vim/.config/nvim/plugged
+vim/.config/nvim/.netrwhist
+vim/.config/nvim/plugged
 local_data
 newsboat/*
 .DS_Store
