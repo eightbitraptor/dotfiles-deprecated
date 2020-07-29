@@ -22,6 +22,7 @@ Plug 'godlygeek/tabular'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'yegappan/taglist'
+Plug 'ludovicchabant/vim-gutentags'
 
 " Theme & Appearance
 
