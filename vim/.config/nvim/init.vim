@@ -29,6 +29,7 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'sonph/onehalf', {'rtp': 'vim/'}
+Plug 'artanikin/vim-synthwave84'
 
 call plug#end()
 
@@ -41,10 +42,10 @@ set viminfo=
 set synmaxcol=300
 set ttyfast
 set lazyredraw
+set termguicolors
 syntax on
 
-set background=light
-set t_Co=256
+set background=dark
 
 set clipboard=unnamed
 
