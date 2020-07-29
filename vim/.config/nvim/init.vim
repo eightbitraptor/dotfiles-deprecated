@@ -322,14 +322,16 @@ noremap <leader>c :call CleanupWhiteSpace()<cr>
 nmap ! :!
 
 " Tagbar
-noremap <leader>t :TagbarToggle<CR>
+noremap <leader>tt :TagbarToggle<CR>
 
 " switch to most recent active buffer
 noremap ,, <c-^>
 
 " Use fzf
-nnoremap <c-p> :Files<CR>
-nnoremap <c-b> :Buffers<CR>
+nnoremap <leader>f :Files<CR>
+nnoremap <leader>o :Buffers<CR>
+nnoremap <leader>l :Lines<CR>
+nnoremap <leader>ta :Tags<CR>
 
 " run tests
 nnoremap ;t :call TestRunFile()<cr>
