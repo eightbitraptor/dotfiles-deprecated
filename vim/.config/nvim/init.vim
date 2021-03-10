@@ -1,7 +1,7 @@
 let $PATH = system("printenv PATH")
 let $PATH = substitute($PATH, "\<C-J>$", "", "")
 
-call plug#begin('~/.config/nvim/plugged')
+call plug#begin('~/.vim/plugged')
 
 " Make buffers work better
 Plug 'vim-scripts/bufkill.vim'
@@ -12,24 +12,32 @@ Plug 'tpope/vim-fugitive'
 
 " Project navigation
 Plug 'scrooloose/nerdtree'
-Plug 'majutsushi/tagbar'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 " Code utils
-Plug 'junegunn/vim-easy-align'
-Plug 'godlygeek/tabular'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
-Plug 'yegappan/taglist'
-Plug 'ludovicchabant/vim-gutentags'
+Plug 'tpope/vim-unimpaired'
+
+" Ruby/Rails
+Plug 'vim-ruby/vim-ruby'
+Plug 'tpope/vim-rails'
+
+" Rust
+Plug 'wting/rust.vim'
+Plug 'racer-rust/vim-racer'
 
 " Theme & Appearance
+Plug 'nanotech/jellybeans.vim'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'aereal/vim-colors-japanesque'
+Plug 'morhetz/gruvbox'
+Plug 'haishanh/night-owl.vim'
+Plug 'artanikin/vim-synthwave84'
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'sonph/onehalf', {'rtp': 'vim/'}
-Plug 'artanikin/vim-synthwave84'
 
 call plug#end()
 
@@ -42,12 +50,17 @@ set viminfo=
 set synmaxcol=300
 set ttyfast
 set lazyredraw
+
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 set termguicolors
+
 syntax on
 
 set background=dark
+colorscheme synthwave84
 
-set clipboard=unnamed
+"set clipboard=unnamed
 
 set autoindent " Auto-indent
 set expandtab " Expand tabs to spaces
@@ -60,28 +73,32 @@ set showcmd " show current command in status bar
 set hidden " Allow hidden buffers
 set laststatus=2
 set ttimeoutlen=0 timeoutlen=1000
+set relativenumber
 
 set mouse=a
 
 set ruler " co-ords in status bar
 
 set showmode " Show modeline in status
-set colorcolumn=80
+set colorcolumn=81
 
 set hlsearch
 set ignorecase
 set smartcase
 set incsearch
 
+set tags+=.git/tags
+
 set scrolloff=5
 
 set encoding=utf-8
 set fileencoding=utf-8
 
-set wildmode=list:longest,list:full
+set wildmode=longest:list,full
 set wildignore+=*.o,*.pyc,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*,bundle,
       \_html,env,tmp,node_modules,public/uploads,public/assets/source_maps,
       \public
+set suffixesadd=.rb
 
 set nobackup
 set nowb
@@ -93,6 +110,15 @@ set lispwords+=module,describe,it,define-system
 " General Functions
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+function! InsertTabWrapper()
+    let col = col('.') - 1
+    if !col || getline('.')[col - 1] !~ '\k'
+        return "\<tab>"
+    else
+        return "\<c-p>"
+    endif
+endfunction
 
 function! CleanupWhiteSpace()
   execute "normal! ma"
@@ -109,121 +135,6 @@ function! MakeDirectory()
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Running Tests
-"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" A project root is defined as a location that contains a .git directory,
-" somewhere in the file tree, above the file in question.
-"
-" By default, the project root is calculated based on the file path of the
-" open buffer when this command was called. Optionally a path can be passed in
-" as a second parameter
-"
-" Args:
-"   path: start looking for the project root from here
-function! GetProjectRoot(path)
-  let project_marker = '/.git/'
-  let search_dirs = split(expand(a:path), '/')
-  let new_project_root = getcwd()
-
-  let i = len(search_dirs)
-  while i >= 0
-    let try_project_root = '/' . join(search_dirs[0:i], '/')
-
-    if isdirectory(try_project_root . project_marker)
-      let new_project_root = try_project_root
-      break
-    endif
-    let i -= 1
-  endwhile
-
-  return new_project_root
-endfunction
-
-" Changes directory to the "project root" of a file runs a command and then
-" changes the dir back to it's previous value.
-"
-" Args:
-"   cmd (required) - the command to run
-"   path (optional) - a file path to use when finding the project root.
-" Returns:
-"   0
-function! WithProjectDirectory(cmd, ...)
-  let path = get(a:, 1, expand("%"))
-
-  let old_project_root = getcwd()
-  let new_project_root = GetProjectRoot(path)
-
-  execute(":cd" . new_project_root)
-  execute(":!" . a:cmd)
-   execute(":cd" . old_project_root)
-endfunction
-
-" Assume we're reading an RSpec spec, if the filename ends with _spec.rb
-"
-" Args:
-"   file: a file path
-" Returns:
-"   0: the path does not end with _spec.rb
-"   1: the path ends with _spec.rb
-function! IsRspec(file)
-  return match(expand(a:file), '_spec.rb$') != -1
-endfunction
-
-" Assume we're in a Rails project if the string Rails.application appears in
-" config.ru in the project dir
-"
-" Args:
-"   file: a file path
-" Returns:
-"   0: if config.ru doesn't exist, or if config.ru doesn't contain the string
-"      Rails.application
-"   1: if config.ru exists and contains the string Rails.application
-function! IsRails(file)
-  let project_root = GetProjectRoot(expand(a:file))
-  let testfile = project_root . '/config.ru'
-
-  if !filereadable(testfile)
-    return 0
-  endif
-
-  let testfile_lines = join(readfile(testfile), " ")
-  let in_rails = 0
-  if testfile_lines =~ "Rails.application"
-    let in_rails = 1
-  endif
-
-  return in_rails
-endfunction
-
-function! TestRunFile()
-  let filetype = b:current_syntax
-
-  " TODO: refactor to use some kind of intelligent dispatch?
-  if filetype ==? 'ruby'
-    call RbRunTestFile()
-  elseif filetype ==? 'rust'
-    call RsRunTests()
-  endif
-endfunction
-
-function! RsRunTests()
-  call WithProjectDirectory("cargo test")
-endfunction
-
-function! RbRunTestFile()
-  execute(":w")
-  if IsRspec("%")
-    call WithProjectDirectory("bundle exec rspec " . "%")
-  elseif IsRails("%")
-    call WithProjectDirectory("bundle exec rails test " . "%")
-  else
-    call WithProjectDirectory("bundle exec ruby -Ilib:test " . "%")
-  endif
-endfunction
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " AutoCommand Definitions
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -232,7 +143,6 @@ autocmd VimEnter                    * set vb t_vb=
 autocmd BufRead,BufNewFile Makefile * set noet
 autocmd BufRead,BufNewFile          *.tsv set noet
 autocmd BufRead,BufNewFile          *.clj set filetype=clojure
-autocmd BufWritePre                 * %s/\s\+$//e
 
 augroup RustShenanigans
   au!
@@ -294,7 +204,7 @@ endfunction
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let mapleader = "\<Space>"
+let mapleader="\<Space>"
 
 " Beginning and end of line
 nnoremap <C-a> ^
@@ -321,27 +231,32 @@ noremap <leader>c :call CleanupWhiteSpace()<cr>
 " run shell commands quick from normal mode
 nmap ! :!
 
-" Tagbar
-noremap <leader>tt :TagbarToggle<CR>
+" Tags
+map <Leader>rt :!ctags --tag-relative=yes --extras=+f -Rf.git/tags --languages=-javascript,sql .<cr><cr>
 
 " switch to most recent active buffer
 noremap ,, <c-^>
+
+" context sensitive tab key
+inoremap <tab> <c-r>=InsertTabWrapper()<cr>
+inoremap <s-tab> <c-n>
 
 " Use fzf
 nnoremap <leader>f :Files<CR>
 nnoremap <leader>o :Buffers<CR>
 nnoremap <leader>l :Lines<CR>
-nnoremap <leader>ta :Tags<CR>
+nnoremap <leader>T :Tags<CR>
+nnoremap <leader>t :BTags<CR>
+
+" building Ruby
+nnoremap <leader>m :make miniruby<cr>
+nnoremap <leader>M :make<cr>
 
 " run tests
 nnoremap ;t :call TestRunFile()<cr>
 
 nmap <F6> :call MakeDirectory()<cr>
+nmap Q :qa!<cr>
+map :W :w
+map :E :e
 
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_ruby_rubocop_executable = 'bundle'
-let g:ale_lint_on_enter = 0
-let g:ale_linters = {
-\   'ruby': ['rubocop'],
-\   'javascript': ['eslint'],
-\}
