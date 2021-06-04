@@ -13,3 +13,6 @@ mpd/.mpd/*
 music/Music/Library/*
 music/Music/Unsorted/*
 music/Music/Ripped/*
+
+fish/.config/fish/conf.d
+fish/.config/fish/functions/_*
