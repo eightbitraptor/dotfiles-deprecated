@@ -11,10 +11,10 @@
                          ("gnu"          . "https://elpa.gnu.org/packages/")
                          ("org"          . "https://orgmode.org/elpa/")))
 
-(setq package-archive-priorities '(("org"          . 30)
+(setq package-archive-priorities '(("melpa"        . 30)
                                    ("melpa-stable" . 20)
-                                   ("gnu"          . 10)
-                                   ("melpa"        . 0)))
+                                   ("org"          . 10)
+                                   ("gnu"          . 0)))
 
 ;; Bootstrap `use-package'
 (unless (package-installed-p 'use-package)
