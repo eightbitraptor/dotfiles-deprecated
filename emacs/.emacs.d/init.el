@@ -55,7 +55,8 @@
 (setq inhibit-startup-message t)
 (setq-default line-spacing 5)
 (global-display-line-numbers-mode t)
-(cond ((eq (window-system) 'x)  (set-face-attribute 'default nil :font "Consolas 14"))
+
+(cond ((eq (window-system) 'x)  (set-face-attribute 'default nil :font "Liberation Mono 14"))
       ((eq (window-system) 'mac) (set-face-attribute 'default nil :font "Consolas 16")))
 
 ;;; General editor behaviour
