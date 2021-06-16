@@ -370,9 +370,9 @@ If the comment doesn't exist, offer to insert it."
 ;; (server-start))
 
 ;; Startup Time - END
-(message "My .emacs loaded in %ds" (destructuring-bind
+(message "My .emacs loaded in %ds" (cl-destructuring-bind
                                        (hi lo ms psec)
                                        (current-time)
                                      (- (+ hi lo)
-                                        (+ (first *emacs-load-start*)
-                                           (second *emacs-load-start*)))))
+                                        (+ (cl-first *emacs-load-start*)
+                                           (cl-second *emacs-load-start*)))))
