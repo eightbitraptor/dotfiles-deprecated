@@ -305,22 +305,6 @@ If the comment doesn't exist, offer to insert it."
           (setq enh-ruby-hanging-brace-indent-level 2))
 
 
-;;; language: Typescript
-
-(use-package tide
-  :ensure t
-  :mode ("\\.ts\\'" . typescript-mode)
-        ("\\.tsx\\'" . typescript-mode)
-  :config (add-hook 'typescript-mode-hook
-                    (lambda ()
-                      (tide-setup)
-                      (flycheck-mode t)
-                      (setq flycheck-check-syntax-automatically '(save mode-enabled))
-                      (eldoc-mode t)
-                      (tide-hl-identifier-mode +1)
-                      (setq typescript-indent-level 2)
-                      (add-hook 'before-save-hook 'tide-format-before-save nil t))))
-
 (use-package web-mode
   :ensure t
   :mode "\\.tsx"
@@ -335,13 +319,6 @@ If the comment doesn't exist, offer to insert it."
         (setq web-mode-code-indent-offset 2)
         (setq web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
         (setq web-mode-enable-auto-indentation nil))
-
-
-;;; Language: GraphQL
-
-(use-package graphql-mode
-  :ensure t
-  :mode "\\.graphql")
 
 
 ;;; Language: Toml/Yaml/Markdown
