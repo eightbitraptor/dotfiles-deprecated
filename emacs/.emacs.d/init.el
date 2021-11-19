@@ -258,6 +258,19 @@
         (setq dumb-jump-selector 'ivy)
         (dumb-jump-mode))
 
+(use-package yasnippet
+  :ensure t
+  :config (setq yas-verbosity 1
+                yas-wrap-around-region t)
+
+          (with-eval-after-load 'yasnippet
+            (setq yas-snippet-dirs '(yasnippet-snippets-dir)))
+
+           (yas-reload-all)
+           (yas-global-mode))
+
+(use-package yasnippet-snippets :ensure t)
+
 ;;; Language: Ruby
 
 (defun ruby-frozen-string-literal ()
