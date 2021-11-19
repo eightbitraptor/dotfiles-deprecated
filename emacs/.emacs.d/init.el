@@ -32,6 +32,9 @@
         (setq exec-path-from-shell-check-startup-files nil)
         (exec-path-from-shell-initialize))
 
+(use-package undo-tree
+  :ensure t
+  :config (global-undo-tree-mode))
 
 ;;; Themes and appearance
 
