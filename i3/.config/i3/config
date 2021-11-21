@@ -21,7 +21,7 @@ client.focused_inactive $base03 $base03 $base05 $base03
 client.unfocused        $base03 $base03 $base05 $base00
 client.urgent $base01 $base01 $base05 $base00
 
-set $mod Mod1
+set $mod Mod4
 floating_modifier $mod
 
 font pango:monospace 8
