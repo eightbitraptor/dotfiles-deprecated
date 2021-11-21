@@ -56,7 +56,5 @@
 	algorithm = patience
 [commit]
 	verbose = true
-[credential]
-	helper = osxkeychain
 [init]
 	defaultBranch = main
