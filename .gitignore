@@ -15,4 +15,4 @@ music/Music/Unsorted/*
 music/Music/Ripped/*
 
 fish/.config/fish/conf.d
-fish/.config/fish/functions/_*
+fish/.config/fish/functions/*
