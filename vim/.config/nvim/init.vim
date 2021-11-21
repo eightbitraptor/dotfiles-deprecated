@@ -107,6 +107,9 @@ set noswapfile
 
 set lispwords+=module,describe,it,define-system
 
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /^\t*\zs \+/
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General Functions
 "
