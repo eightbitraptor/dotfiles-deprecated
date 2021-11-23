@@ -20,6 +20,7 @@ Plug 'preservim/tagbar'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-unimpaired'
+Plug 'jpalardy/spacehi.vim'
 
 " Ruby/Rails
 Plug 'vim-ruby/vim-ruby'
@@ -205,6 +206,8 @@ nnoremap <CR> :noh<CR><CR>
 vmap <D-]> >gv
 vmap <D-[> <gv
 
+" Hightlight literal Tabs
+noremap <leader>w :ToggleSpaceHi<cr>
 " Cleanup whitespace
 noremap <leader>c :call CleanupWhiteSpace()<cr>
 
