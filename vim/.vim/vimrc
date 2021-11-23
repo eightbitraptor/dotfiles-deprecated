@@ -14,6 +14,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'scrooloose/nerdtree'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'preservim/tagbar'
 
 " Code utils
 Plug 'tpope/vim-surround'
@@ -179,14 +180,6 @@ augroup CShenanigans
         \ set tabstop=8 shiftwidth=4 smarttab expandtab |
 augroup END
 
-augroup HighlightPeskyTabs
-    autocmd!
-    autocmd BufRead,BufNewFile *
-                \ syn match TrailingWS /\s\+$\| \+\ze\t/ |
-                \ hi def TrailingWS ctermbg=darkgreen guibg=darkgreen |
-augroup END
-
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Keyboard Mapping
 "
@@ -234,11 +227,12 @@ nnoremap <leader>l :Lines<CR>
 nnoremap <leader>T :Tags<CR>
 nnoremap <leader>t :BTags<CR>
 
-nmap bd :BD<cr>
+" building Ruby
+nnoremap <leader>m :make miniruby<cr>
+nnoremap <leader>M :make<cr>
 
 " run tests
 nnoremap ;t :call TestRunFile()<cr>
-
 
 nmap <F6> :call MakeDirectory()<cr>
 nmap Q :qa!<cr>
