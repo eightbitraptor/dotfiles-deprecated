@@ -23,6 +23,7 @@ Plug 'tpope/vim-unimpaired'
 
 " Ruby/Rails
 Plug 'vim-ruby/vim-ruby'
+Plug 'tpope/vim-rbenv'
 Plug 'tpope/vim-rails'
 
 " Rust
