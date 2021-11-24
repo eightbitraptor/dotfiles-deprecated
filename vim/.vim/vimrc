@@ -39,9 +39,6 @@ Plug 'morhetz/gruvbox'
 Plug 'haishanh/night-owl.vim'
 Plug 'artanikin/vim-synthwave84'
 
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-
 call plug#end()
 
 filetype on
