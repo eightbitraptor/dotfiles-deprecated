@@ -172,10 +172,14 @@ mode "$mode_screens" {
 }
 bindsym $mod+Ctrl+s mode "$mode_screens"
 
+bar {
+    position top
+    status_command i3status
+}
+
 for_window [class="^.*"] border pixel 2
 new_window 1pixel
 
-exec_always --no-startup-id ~/.config/polybar/launch.sh
 exec wal -R -a 95
 exec compton
 exec setxkbmap -option "ctrl:nocaps"
