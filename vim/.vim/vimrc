@@ -11,10 +11,8 @@ Plug 'vim-scripts/scratch.vim'
 Plug 'tpope/vim-fugitive'
 
 " Project navigation
-Plug 'scrooloose/nerdtree'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'preservim/tagbar'
 
 " Code utils
 Plug 'tpope/vim-surround'
@@ -32,11 +30,6 @@ Plug 'wting/rust.vim'
 Plug 'racer-rust/vim-racer'
 
 " Theme & Appearance
-Plug 'nanotech/jellybeans.vim'
-Plug 'NLKNguyen/papercolor-theme'
-Plug 'aereal/vim-colors-japanesque'
-Plug 'morhetz/gruvbox'
-Plug 'haishanh/night-owl.vim'
 Plug 'artanikin/vim-synthwave84'
 
 call plug#end()
@@ -106,26 +99,6 @@ set noswapfile
 
 set lispwords+=module,describe,it,define-system
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" General Functions
-"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-function! InsertTabWrapper()
-    let col = col('.') - 1
-    if !col || getline('.')[col - 1] !~ '\k'
-        return "\<tab>"
-    else
-        return "\<c-p>"
-    endif
-endfunction
-
-function! CleanupWhiteSpace()
-  execute "normal! ma"
-  :%s/\s\+$//
-  execute "normal! `a"
-endfunction
-
 function! MakeDirectory()
   call system('mkdir -p ' . expand('%:p:h') )
   if v:shell_error != 0
@@ -134,22 +107,8 @@ function! MakeDirectory()
   :w
 endfunction
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" AutoCommand Definitions
-"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 autocmd VimEnter                    * set vb t_vb=
 autocmd BufRead,BufNewFile Makefile * set noet
-autocmd BufRead,BufNewFile          *.tsv set noet
-autocmd BufRead,BufNewFile          *.clj set filetype=clojure
-
-augroup RustShenanigans
-  au!
-  autocmd BufRead,BufNewFile *.rs
-        \ set filetype=rust |
-        \ nnoremap ;F :w ! rustfmt %<cr>
-augroup END
 
 augroup RubyShenanigans
   au!
@@ -196,7 +155,6 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
-nnoremap <leader>n <ESC>:NERDTreeToggle<cr>
 nnoremap <CR> :noh<CR><CR>
 
 " Command-][ to increase/decrease indentation
@@ -205,21 +163,9 @@ vmap <D-[> <gv
 
 " Hightlight literal Tabs
 noremap <leader>w :ToggleSpaceHi<cr>
-" Cleanup whitespace
-noremap <leader>c :call CleanupWhiteSpace()<cr>
-
-" run shell commands quick from normal mode
-nmap ! :!
 
 " Tags
 map <Leader>rt :!ctags --tag-relative=yes --extras=+f -Rf.git/tags --languages=-javascript,sql .<cr><cr>
-
-" switch to most recent active buffer
-noremap ,, <c-^>
-
-" context sensitive tab key
-inoremap <tab> <c-r>=InsertTabWrapper()<cr>
-inoremap <s-tab> <c-n>
 
 " Use fzf
 nnoremap <leader>f :Files<CR>
@@ -231,12 +177,3 @@ nnoremap <leader>t :BTags<CR>
 " building Ruby
 nnoremap <leader>m :make miniruby<cr>
 nnoremap <leader>M :make<cr>
-
-" run tests
-nnoremap ;t :call TestRunFile()<cr>
-
-nmap <F6> :call MakeDirectory()<cr>
-nmap Q :qa!<cr>
-map :W :w
-map :E :e
-
