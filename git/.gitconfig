@@ -1,9 +1,9 @@
 [core]
-  whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
+  whitespace=fix,-indent-with-non-tab,tab-in-indent,trailing-space,cr-at-eol
   excludesfile = ~/.gitignore
   autocrlf = input
 	commitGraph = true
-	editor = nvim
+	editor = vim
 [alias]
   praise = blame
   st = status
