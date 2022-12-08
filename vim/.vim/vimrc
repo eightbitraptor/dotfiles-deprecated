@@ -19,7 +19,6 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-unimpaired'
 Plug 'godlygeek/tabular'
-Plug 'jpalardy/spacehi.vim'
 Plug 'ackyshake/VimCompletesMe'
 Plug 'preservim/tagbar'
 Plug 'preservim/nerdtree'
@@ -36,6 +35,8 @@ Plug 'wting/rust.vim'
 Plug 'racer-rust/vim-racer'
 
 " Theme & Appearance
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'artanikin/vim-synthwave84'
 
 call plug#end()
@@ -52,11 +53,11 @@ set lazyredraw
 
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+set term=xterm-256colors
 set termguicolors
+set background=dark
 
 syntax on
-
-set background=light
 
 "set clipboard=unnamed
 
@@ -103,6 +104,8 @@ set nowb
 set noswapfile
 
 set lispwords+=module,describe,it,define-system
+
+let g:netrw_bufsettings="noma nomod nonu nobl nowrap ro rnu"
 
 function! MakeDirectory()
   call system('mkdir -p ' . expand('%:p:h') )
@@ -212,8 +215,16 @@ vmap <D-[> <gv
 " Hightlight literal Tabs
 noremap <leader>w :ToggleSpaceHi<cr>
 
+function! DoneTagging(channel)
+  echo "Done tagging"
+endfunction
+
+function! Taggit()
+    let job = job_start("ctags --tag-relative=yes --extras=+f -Rf.git/tags --languages=-javascript,sql,TypeScript --exclude=.ext --exclude=include/ruby-\* --exclude=rb_mjit_header.h .", { 'close_cb': 'DoneTagging'})
+endfunction
+
 " Tags
-map <Leader>rt :!ctags --tag-relative=yes --extras=+f -Rf.git/tags --languages=-javascript,sql .<cr><cr>
+map <Leader>rt :!ctags --tag-relative=yes --extras=+f -Rf.git/tags --languages=-javascript,sql,TypeScript --exclude=.ext --exclude=include/ruby-\* --exclude=rb_mjit_header.h .<cr><cr>
 
 " Use fzf
 nnoremap <leader>f :Files<CR>
